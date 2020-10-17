@@ -9,7 +9,10 @@ ENV BOOT_DIR="$ROOT_DIR/efi/boot"
 RUN mkdir -p "$BOOT_DIR"
 
 # Download UEFI shell
-RUN curl -s -o "$BOOT_DIR/bootx64.efi" 'https://raw.githubusercontent.com/tianocore/edk2/UDK2018/ShellBinPkg/UefiShell/X64/Shell.efi' 
+# V2 shell, which doesn't work with the flashing binaries
+#RUN curl -s -o "$BOOT_DIR/bootx64.efi" 'https://raw.githubusercontent.com/tianocore/edk2/UDK2018/ShellBinPkg/UefiShell/X64/Shell.efi' 
+# V1 shell, [which does](https://www.ixsystems.com/community/threads/how-to-flash-lsi-9211-8i-using-efi-shell.50902)
+RUN curl -s -o "$BOOT_DIR/bootx64.efi" 'https://raw.githubusercontent.com/tianocore/edk2/UDK2018/EdkShellBinPkg/FullShell/X64/Shell_Full.efi' 
 
 # Download & extract flashing utility
 RUN curl 'https://docs.broadcom.com/docs-and-downloads/host-bus-adapters/host-bus-adapters-common-files/sas_sata_6g_p20/Installer_P20_for_UEFI.zip' --output 'installer.zip'
