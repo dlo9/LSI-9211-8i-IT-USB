@@ -1,6 +1,21 @@
 # Disable command echoing
 @echo -off
 
+# Find startup device, necessary to get files from the root directory
+for %i run (1 10)
+  set root "fs%i%:"
+  if exist "%root%\sas2flash.efi" then
+    goto deviceFound
+  endif
+endfor
+
+echo "*************************************************************"
+echo "*** ERROR: could not find device with file: sas2flash.efi ***"
+echo "*************************************************************"
+goto end
+
+:deviceFound
+
 # Try to erase existing firmware
 echo "*********************************"
 echo "*** Erasing existing firmware ***"
@@ -18,8 +33,7 @@ if not %LastError% == 0 then
 endif
 
 echo " "
-# TODO: will the startup device always be fs0??
-if exist fs0:\disable_bios then
+if exist "%root%\disable_bios" then
     # Flash firmware only, allowing faster boot times (but no booting from HBA-attached disks)
     echo "*****************************************"
     echo "*** Flashing IT firmware without BIOS ***"
