@@ -18,11 +18,24 @@ if not %LastError% == 0 then
 endif
 
 echo " "
-echo "****************************"
-echo "*** Flashing IT firmware ***"
-echo "****************************"
-echo " "
-sas2flash.efi -o -f 2118it.bin -b mptsas2.rom
+# TODO: will the startup device always be fs0??
+if exist fs0:\disable_bios then
+    # Flash firmware only, allowing faster boot times (but no booting from HBA-attached disks)
+    echo "*****************************************"
+    echo "*** Flashing IT firmware without BIOS ***"
+    echo "*****************************************"
+    echo " "
+
+    sas2flash.efi -o -f 2118it.bin
+else
+    # Flash firmware + BIOS, allowing booting from an HBA-attached disk
+    echo "**************************************"
+    echo "*** Flashing IT firmware with BIOS ***"
+    echo "**************************************"
+    echo " "
+
+    sas2flash.efi -o -f 2118it.bin -b mptsas2.rom
+endif
 
 # Exit on error
 if not %LastError% == 0 then
