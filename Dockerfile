@@ -25,7 +25,7 @@ RUN 7z e -o"$ROOT_DIR" firmware.zip 9211-8i_Package_P20_IR_IT_FW_BIOS_for_MSDOS_
 # Create the image file and recursivly copy the efi directory
 # This is done in a single step to avoid a partially built image taking space in multiple docker layers
 ARG IMG
-RUN truncate -s 1G "$IMG" \
-    && parted --script --align=optimal "$IMG" mklabel gpt mkpart ESP fat32 1MiB 100% set 1 boot on \
-    && mformat -t 1022 -h 64 -s 32 -i "$IMG@@1M" -v "flasher" :: \
+RUN truncate -s 50M "$IMG" \
+    && parted --script --align=optimal "$IMG" mklabel gpt mkpart ESP fat32 1MiB 100% set 1 esp on \
+    && mformat -i "$IMG@@1M" -v "flasher" :: \
     && mcopy -i "$IMG@@1M" -sp "$ROOT_DIR"/* ::
