@@ -22,11 +22,10 @@ RUN 7z e -o"$ROOT_DIR" installer.zip Installer_P20_for_UEFI/sas2flash_efi_ebc_re
 RUN curl 'https://docs.broadcom.com/docs-and-downloads/host-bus-adapters/host-bus-adapters-common-files/sas_sata_6g_p20/9211-8i_Package_P20_IR_IT_FW_BIOS_for_MSDOS_Windows.zip' --output 'firmware.zip'
 RUN 7z e -o"$ROOT_DIR" firmware.zip 9211-8i_Package_P20_IR_IT_FW_BIOS_for_MSDOS_Windows/Firmware/HBA_9211_8i_IT/2118it.bin 9211-8i_Package_P20_IR_IT_FW_BIOS_for_MSDOS_Windows/sasbios_rel/mptsas2.rom
 
-# Create the image file
+# Create the image file and recursivly copy the efi directory
+# This is done in a single step to avoid a partially built image taking space in multiple docker layers
 ARG IMG
-RUN truncate -s 1G "$IMG"
-RUN parted --script --align=optimal "$IMG" mklabel gpt mkpart ESP fat32 1MiB 100% set 1 boot on
-RUN mformat -t 1022 -h 64 -s 32 -i "$IMG@@1M" -v "flasher" ::
-
-# Recursive copy efi directory
-RUN mcopy -i "$IMG@@1M" -sp "$ROOT_DIR"/* ::
+RUN truncate -s 1G "$IMG" \
+    && parted --script --align=optimal "$IMG" mklabel gpt mkpart ESP fat32 1MiB 100% set 1 boot on \
+    && mformat -t 1022 -h 64 -s 32 -i "$IMG@@1M" -v "flasher" :: \
+    && mcopy -i "$IMG@@1M" -sp "$ROOT_DIR"/* ::
