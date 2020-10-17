@@ -1,4 +1,5 @@
 #!/bin/sh
+# This is for debugging the UEFI boot process & script, and is only expected to be run during development
 
 IMG=flasher.img
 
