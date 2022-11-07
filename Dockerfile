@@ -1,7 +1,7 @@
 FROM alpine:3.16
 # Inspiration from: https://www.tfir.io/easiest-way-to-flash-lsi-sas-9211-8i-on-motherboards-without-efi-shell/
 
-RUN apk --no-cache add curl mtools parted unzip
+RUN apk --no-cache add curl mtools parted unzip zstd
 
 # Create output directory
 ENV ROOT_DIR=imgroot
@@ -34,3 +34,5 @@ RUN truncate -s 50M "$IMG" \
     && parted --script --align=optimal "$IMG" mklabel gpt mkpart ESP fat32 1MiB 100% set 1 esp on \
     && mformat -i "$IMG@@1M" -v "flasher" :: \
     && mcopy -i "$IMG@@1M" -sp "$ROOT_DIR"/* ::
+
+RUN zstd "$IMG"

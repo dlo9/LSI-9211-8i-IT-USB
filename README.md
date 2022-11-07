@@ -16,6 +16,7 @@ These steps are for building on a Linux host. The image can also be built and fl
    ```sh
    # Firmware + BIOS
    ./build.sh
+
    # Firmware only:
    ./build.sh --disable-bios
    ```
@@ -24,7 +25,7 @@ These steps are for building on a Linux host. The image can also be built and fl
    dd if=flasher.img bs=4M status=progress of=/dev/<your usb>
    ```
 3. Boot the USB on the target machine, and wait for the startup script to flash the new firmware
-5. Enjoy!
+4. Enjoy!
 
 ## Debugging
 ### Requirements

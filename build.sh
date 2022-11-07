@@ -15,3 +15,5 @@ docker build --build-arg IMG="$IMG" --build-arg DISABLE_BIOS="$DISABLE_BIOS" -t 
 # Exfiltrate data
 container="$(docker create "$TAG" true)"
 docker cp "$container:/$IMG" .
+docker cp "$container:/$IMG.zst" .
+docker rm "$container"

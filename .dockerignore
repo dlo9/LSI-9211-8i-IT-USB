@@ -5,3 +5,4 @@ debug.sh
 Dockerfile
 README.md
 *.img
+*.zst
