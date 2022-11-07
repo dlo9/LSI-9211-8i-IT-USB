@@ -1,4 +1,4 @@
-FROM alpine:20200917
+FROM alpine:3.16
 # Inspiration from: https://www.tfir.io/easiest-way-to-flash-lsi-sas-9211-8i-on-motherboards-without-efi-shell/
 
 RUN apk --no-cache add curl mtools parted p7zip
