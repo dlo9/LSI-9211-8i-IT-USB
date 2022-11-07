@@ -1,1 +1,7 @@
+.git
+.gitignore
+build.sh
+debug.sh
+Dockerfile
+README.md
 *.img
