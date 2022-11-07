@@ -1,9 +1,11 @@
 #!/bin/sh
 
+set -e
+
 TAG="flasher"
 IMG="$TAG.img"
 
-if [ "$1" == "--disable-bios" ]; then
+if [ "$1" = "--disable-bios" ]; then
 	DISABLE_BIOS=1
 fi
 
